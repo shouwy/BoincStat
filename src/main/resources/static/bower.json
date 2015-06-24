@@ -1,0 +1,41 @@
+{
+  "name": "startbootstrap-admin",
+  "version": "1.0.7",
+  "authors": [
+    "Inspiron"
+  ],
+  "description": "A free, open source, Bootstrap admin theme created by Start Bootstrap",
+  "keywords": [
+    "bootstrap",
+    "theme"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "pages",
+    "index.html",
+    "/js"
+  ],
+  "main": [
+    "css/admin.css",
+    "js/admin.js"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "datatables": "~1.10.4",
+    "datatables-plugins": "~1.0.1",
+    "datatables-responsive": "~1.0.3",
+    "highchart-ng": "~0.0.8",
+    "highcharts": "~4.1.6",
+    "highstock": "~3.0.1",
+    "font-awesome": "4.3.0",
+    "angular": "~1.4.1",
+    "holderjs": "2.8.0",
+    "metisMenu": "~2.0.2",
+    "angular-route": "~1.4.1"
+  }
+}
