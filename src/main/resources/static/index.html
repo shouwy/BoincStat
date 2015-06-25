@@ -5,6 +5,8 @@
     <title>BoincStat</title>
     <!-- Bootstrap Core CSS -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ngTable CSS -->
+    <link href="bower_components/ng-table/dist/ng-table.css" rel="stylesheet">
     <!-- MetisMenu CSS -->
     <link href="bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <!-- Timeline CSS -->
@@ -75,12 +77,14 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-1">
-                    <table>
-                        <thead>
-                            <tr></tr><th>ProjectId</th><th>Name</th><th>Status</th><th>Arhived</th></tr>
-                        </thead>
+                    <table ng-controller="projectCtrl" ng-table="projectTable" class="table">
                         <tbody>
-                            <tr ng-repeat="p in projects.content"><td>{{p.idProject}}</td><td>{{p.name}}</td><td>{{p.status}}</td><td>{{p.archived}}</td></tr>
+                            <tr ng-repeat="p in $projects">
+                                <td data-title="'Id'" >{{p.idProject}}</td>
+                                <td data-title="'Name'" >{{p.name}}</td>
+                                <td data-title="'Status'" >{{p.status}}</td>
+                                <td data-title="'Archived'" >{{p.archived}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -91,6 +95,9 @@
 
     <!-- Angular -->
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
+    <!-- ngTable -->
+    <script type="text/javascript" src="bower_components/ng-table/dist/ng-table.js"></script>
     <!-- jQuery -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap Core JavaScript -->

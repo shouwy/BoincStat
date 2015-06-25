@@ -26,9 +26,6 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.1",
-    "datatables": "~1.10.4",
-    "datatables-plugins": "~1.0.1",
-    "datatables-responsive": "~1.0.3",
     "highchart-ng": "~0.0.8",
     "highcharts": "~4.1.6",
     "highstock": "~3.0.1",
@@ -36,6 +33,7 @@
     "angular": "~1.4.1",
     "holderjs": "2.8.0",
     "metisMenu": "~2.0.2",
-    "angular-route": "~1.4.1"
+    "angular-route": "~1.4.1",
+    "ng-table": "~0.5.4"
   }
 }
