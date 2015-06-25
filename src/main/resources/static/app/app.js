@@ -6,7 +6,7 @@ app.controller("homeCtrl", function($scope, $http){
 
     });
 app.controller("projectCtrl", function($scope, ngTableParams, projectService){
-     var projects = projectService.data;
+     $scope.projects = projectService.cachedData;
 
     $scope.projectTable = new ngTableParams({
         page : 1,
