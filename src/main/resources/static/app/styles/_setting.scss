@@ -1,0 +1,81 @@
+
+.mar-bottom-none{
+  margin-bottom: 0 !important;
+}
+input.ng-dirty.ng-invalid {
+  border-color: red
+}
+.set-alert{
+  margin-bottom: 0 !important;
+  padding: 10px !important;
+}
+#sidebar-nav .nav > .open .submenu > li > .submenu a:before, #sidebar-nav .nav > .active .submenu > li > .submenu a:before{
+  content: '' !important;
+}
+#sidebar-nav .nav > .open .submenu > li > .submenu > li a:hover{
+   color: #fff !important;
+}
+#config-tool.closed {
+  right: -400px !important;
+}
+#config-tool{
+  width: 400px !important;
+  top: 110px !important;
+}
+.display-inline{
+  display: inline-block !important;
+}
+.set-fa-lg{
+  font-size: 1.8000em !important;
+  line-height: 1.00em !important;
+  vertical-align: -15% !important;
+  cursor: pointer;
+}
+.folder_wrapper > ul{
+  padding-left: 5px !important;
+}
+.folder_wrapper > ul ul{
+  padding: 0 0 0 15px !important;
+}
+.pad-right{
+  padding-right: 6px;
+}
+.folder-color{
+  color: #dfba4a;
+}
+.mar-top{
+  margin-top: 10px;
+}
+.loader-content{
+  position: absolute;
+  top: 40% !important;
+  max-width: 15% !important;
+  z-index: 9999 !important;
+  margin-left: -40px !important;
+}
+.set-radio{
+  line-height: 20px !important;
+}
+#header-navbar{
+  z-index: 1000;
+}
+.navbar{
+  #header-nav{
+    position: relative;
+    right: 15%;
+    .popover{
+      position: absolute;
+      top: 40px;
+      right: -70%;
+      left: 4%;
+      line-height: 30px;
+      width: 345px;
+      max-width: 400px;
+      select{
+        border: 2px solid #e7ebee;
+        font-size: 12px;
+        padding: 6px 6px;
+      }
+    }
+  }
+}

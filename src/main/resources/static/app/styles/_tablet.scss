@@ -1,0 +1,22 @@
+@media only screen and (min-width : 768px) and (max-width : 1024px)  {
+//@media (min-width: 768px) {
+  .navbar-collapse.collapse {display: none !important;}
+  .navbar-collapse.in {
+    display: block !important;
+    overflow-y: auto !important;
+  }
+  .pdls_wrapper .select_option_box{
+    margin: 13px auto 0;
+    width: 50%;
+    float: none;
+    display: block;
+    clear: both;
+    position: relative;
+    top: 10px;
+  }
+  .loader-content {
+    max-width: 20% !important;
+    margin-left: -70px !important;
+  }
+}
+

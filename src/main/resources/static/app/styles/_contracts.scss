@@ -1,0 +1,101 @@
+.contracts {
+  .contracts-header{
+    background: #a2c4c9;
+    margin: -15px -15px 20px -15px;
+    padding: 15px;
+    border-bottom: 1px solid #dee4e8;
+  }
+  .contracts-btn-group{
+    display: block;
+  }
+}
+.top-buffer{
+  padding-top:20px;
+}
+.tags-wrapper {
+  position: relative;
+}
+.tags-cloud .tag {
+  float: left;
+  padding: 4px 6px;
+  font-size: 1em;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: #fff;
+  font-weight: 600;
+  border-radius: 4px;
+  width: 100%;
+  background-clip: padding-box;
+  border: 1px solid #dddddd;
+}
+li.tagName.ng-binding.ng-scope{
+  display: inline-block;
+  float: left;
+  border: 1px solid #D0D0D0;
+  padding: 5px;
+  margin: 0 4px;
+  cursor: pointer;
+  background: #efefef;
+  list-style-type: none;
+}
+.tags-cloud .tag:hover {
+  border: 1px solid #cccccc;
+}
+.tags-cloud .tag:hover .cross {
+  opacity: 1;
+}
+.tags-cloud .tag li:last-child{
+  float: left;
+}
+.tags-cloud .tag li:last-child input{
+     border:none;
+}
+.tags-cloud .tag li:last-child input:focus{
+  border:none !important;
+  outline: none;
+  box-shadow: none;
+}
+.tags-cloud .tag li{
+  list-style-type: none;
+}
+.tags-cloud .tag .cross {
+  margin-left: 5px;
+  margin-right: 3px;
+  font-size: 1em;
+  color: #a2c4c9;
+  opacity: .7;
+  cursor: pointer;
+}
+.suggestions-list {
+  position: absolute;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  top: 41px;
+  z-index: 9999;
+  text-align: left;
+  overflow: auto;
+  background-clip: padding-box;
+  font-size: 14px;
+  border: 1px solid #dddddd;
+}
+.suggestions-list li {
+  color: #333333;
+  font-weight: 600;
+  padding: 4px 25px;
+  font-size: 1em;
+  cursor: pointer;
+  background: #fff;
+}
+.suggestions-list li:hover {
+  background: #dddddd;
+}
+.suggestions-list li:active,
+.suggestions-list li.active {
+  color: #20a28e;
+  background: #dddddd;
+}
+.suggestions-list:focus{
+  outline:none;
+}

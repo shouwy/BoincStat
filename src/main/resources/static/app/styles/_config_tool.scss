@@ -1,0 +1,26 @@
+.config_tool_wrapper{
+  .folder_wrapper{
+    > div
+    {
+      ul{
+        li{
+          padding: 0 0 0 0 !important;
+          a{margin: 2.5px;}
+          i {color: #dfba49;}
+          ul {
+            padding: 0 !important;
+          }
+        }
+        .jstree-open {
+          > a
+          {
+            > .fa-folder
+            {
+              &:before{content: "\f07c";}
+            }
+          }
+        }
+      }
+    }
+  }
+}

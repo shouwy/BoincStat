@@ -174,8 +174,8 @@ function minErr(module, ErrorConstructor) {
  * @description
  *
  * # ng (core module)
- * The ng module is loaded by default when an AngularJS controller is started. The module itself
- * contains the essential components for an AngularJS controller to function. The table below
+ * The ng module is loaded by default when an AngularJS application is started. The module itself
+ * contains the essential components for an AngularJS application to function. The table below
  * lists a high level breakdown of each of the services/factories, filters, directives and testing
  * components available within this core module.
  *
@@ -1134,7 +1134,7 @@ function sliceArgs(args, startIndex) {
  * @description
  * Returns a function which calls function `fn` bound to `self` (`self` becomes the `this` for
  * `fn`). You can supply optional `args` that are prebound to the function. This feature is also
- * known as [partial controller](http://en.wikipedia.org/wiki/Partial_application), as
+ * known as [partial application](http://en.wikipedia.org/wiki/Partial_application), as
  * distinguished from [function currying](http://en.wikipedia.org/wiki/Currying#Contrast_with_partial_function_application).
  *
  * @param {Object} self Context which `fn` should be evaluated in.
@@ -1387,35 +1387,35 @@ function getNgAttribute(element, ngAttr) {
  * @module ng
  *
  * @element ANY
- * @param {angular.Module} ngApp an optional controller
+ * @param {angular.Module} ngApp an optional application
  *   {@link angular.module module} name to load.
  * @param {boolean=} ngStrictDi if this attribute is present on the app element, the injector will be
- *   created in "strict-di" mode. This means that the controller will fail to invoke functions which
+ *   created in "strict-di" mode. This means that the application will fail to invoke functions which
  *   do not use explicit function annotation (and are thus unsuitable for minification), as described
  *   in {@link guide/di the Dependency Injection guide}, and useful debugging info will assist in
  *   tracking down the root of these bugs.
  *
  * @description
  *
- * Use this directive to **auto-bootstrap** an AngularJS controller. The `ngApp` directive
- * designates the **root element** of the controller and is typically placed near the root element
+ * Use this directive to **auto-bootstrap** an AngularJS application. The `ngApp` directive
+ * designates the **root element** of the application and is typically placed near the root element
  * of the page - e.g. on the `<body>` or `<html>` tags.
  *
- * Only one AngularJS controller can be auto-bootstrapped per HTML document. The first `ngApp`
+ * Only one AngularJS application can be auto-bootstrapped per HTML document. The first `ngApp`
  * found in the document will be used to define the root element to auto-bootstrap as an
- * controller. To run multiple applications in an HTML document you must manually bootstrap them using
+ * application. To run multiple applications in an HTML document you must manually bootstrap them using
  * {@link angular.bootstrap} instead. AngularJS applications cannot be nested within each other.
  *
- * You can specify an **AngularJS module** to be used as the root module for the controller.  This
- * module will be loaded into the {@link auto.$injector} when the controller is bootstrapped. It
- * should contain the controller code needed or have dependencies on other modules that will
+ * You can specify an **AngularJS module** to be used as the root module for the application.  This
+ * module will be loaded into the {@link auto.$injector} when the application is bootstrapped. It
+ * should contain the application code needed or have dependencies on other modules that will
  * contain the code. See {@link angular.module} for more information.
  *
  * In the example below if the `ngApp` directive were not placed on the `html` element then the
  * document would not be compiled, the `AppController` would not be instantiated and the `{{ a+b }}`
  * would not be resolved to `3`.
  *
- * `ngApp` is the easiest, and most common way to bootstrap an controller.
+ * `ngApp` is the easiest, and most common way to bootstrap an application.
  *
  <example module="ngAppDemo">
    <file name="index.html">
@@ -1542,7 +1542,7 @@ function angularInit(element, bootstrap) {
  * @name angular.bootstrap
  * @module ng
  * @description
- * Use this function to manually start up angular controller.
+ * Use this function to manually start up angular application.
  *
  * See: {@link guide/bootstrap Bootstrap}
  *
@@ -1574,15 +1574,15 @@ function angularInit(element, bootstrap) {
  * </html>
  * ```
  *
- * @param {DOMElement} element DOM element which is the root of angular controller.
- * @param {Array<String|Function|Array>=} modules an array of modules to load into the controller.
+ * @param {DOMElement} element DOM element which is the root of angular application.
+ * @param {Array<String|Function|Array>=} modules an array of modules to load into the application.
  *     Each item in the array should be the name of a predefined module or a (DI annotated)
  *     function that will be invoked by the injector as a `config` block.
  *     See: {@link angular.module modules}
- * @param {Object=} config an object for defining configuration options for the controller. The
+ * @param {Object=} config an object for defining configuration options for the application. The
  *     following keys are supported:
  *
- * * `strictDi` - disable automatic function annotation for the controller. This is meant to
+ * * `strictDi` - disable automatic function annotation for the application. This is meant to
  *   assist in finding bugs which break minified code. Defaults to `false`.
  *
  * @returns {auto.$injector} Returns the newly created injector for this app.
@@ -1660,7 +1660,7 @@ function bootstrap(element, modules, config) {
  * @name angular.reloadWithDebugInfo
  * @module ng
  * @description
- * Use this function to reload the current controller with debug information turned on.
+ * Use this function to reload the current application with debug information turned on.
  * This takes precedence over a call to `$compileProvider.debugInfoEnabled(false)`.
  *
  * See {@link ng.$compileProvider#debugInfoEnabled} for more.
@@ -1676,7 +1676,7 @@ function reloadWithDebugInfo() {
  * @description
  * Get the testability service for the instance of Angular on the given
  * element.
- * @param {DOMElement} element DOM element which is the root of angular controller.
+ * @param {DOMElement} element DOM element which is the root of angular application.
  */
 function getTestability(rootElement) {
   var injector = angular.element(rootElement).injector();
@@ -1890,7 +1890,7 @@ function setupModuleLoader(window) {
      *
      * The `angular.module` is a global place for creating, registering and retrieving Angular
      * modules.
-     * All modules (angular core or 3rd party) that should be available to an controller must be
+     * All modules (angular core or 3rd party) that should be available to an application must be
      * registered using this mechanism.
      *
      * When passed two or more arguments, a new module is created.  If passed only one argument, an
@@ -2155,7 +2155,7 @@ function setupModuleLoader(window) {
            * @name angular.Module#run
            * @module ng
            * @param {Function} initializationFn Execute this function after injector creation.
-           *    Useful for controller initialization.
+           *    Useful for application initialization.
            * @description
            * Use this method to register work which should be performed when the injector is done
            * loading all modules.
@@ -3639,7 +3639,7 @@ var $$HashMapProvider = [function() {
  *   // create an injector
  *   var $injector = angular.injector(['ng']);
  *
- *   // use the injector to kick off your controller
+ *   // use the injector to kick off your application
  *   // use the type inference to auto inject arguments, or use implicit injection
  *   $injector.invoke(function($rootScope, $compile, $document) {
  *     $compile($document)($rootScope);
@@ -3649,7 +3649,7 @@ var $$HashMapProvider = [function() {
  *
  * Sometimes you want to get access to the injector of a currently running Angular app
  * from outside Angular. Perhaps, you want to inject and compile some markup after the
- * controller has been bootstrapped. You can do this using the extra `injector()` added
+ * application has been bootstrapped. You can do this using the extra `injector()` added
  * to JQuery/jqLite elements. See {@link angular.element}.
  *
  * *This is fairly rare but could be the case if a third party library is injecting the
@@ -5014,7 +5014,7 @@ var $AnimateProvider = ['$provide', function($provide) {
      * @ngdoc service
      * @name $animate
      * @description The $animate service exposes a series of DOM utility methods that provide support
-     * for animation hooks. The default behavior is the controller of DOM operations, however,
+     * for animation hooks. The default behavior is the application of DOM operations, however,
      * when an animation is detected (and animations are enabled), $animate will do the heavy lifting
      * to ensure that animation runs with the triggered DOM operation.
      *
@@ -5092,8 +5092,8 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @name $animate#pin
        * @kind function
        * @description Associates the provided element with a host parent element to allow the element to be animated even if it exists
-       *    outside of the DOM structure of the Angular controller. By doing so, any animation triggered via `$animate` can be issued on the
-       *    element despite being outside the realm of the controller or within another controller. Say for example if the controller
+       *    outside of the DOM structure of the Angular application. By doing so, any animation triggered via `$animate` can be issued on the
+       *    element despite being outside the realm of the application or within another application. Say for example if the application
        *    was bootstrapped on an element that is somewhere inside of the `<body>` tag, but we wanted to allow for an element to be situated
        *    as a direct child of `document.body`, then this can be achieved by pinning the element via `$animate.pin(element)`. Keep in mind
        *    that calling `$animate.pin(element, parentElement)` will not actually insert into the DOM anywhere; it will just create the association.
@@ -5110,7 +5110,7 @@ var $AnimateProvider = ['$provide', function($provide) {
        * @ngdoc method
        * @name $animate#enabled
        * @kind function
-       * @description Used to get and set whether animations are enabled or not on the entire controller or on an element and its children. This
+       * @description Used to get and set whether animations are enabled or not on the entire application or on an element and its children. This
        * function can be called in four ways:
        *
        * ```js
@@ -5351,7 +5351,7 @@ function $$AsyncCallbackProvider() {
  * - abstract away all the browser specific features and inconsistencies
  *
  * For tests we provide {@link ngMock.$browser mock implementation} of the `$browser`
- * service, which can be used for convenient testing of the controller without the interaction with
+ * service, which can be used for convenient testing of the application without the interaction with
  * the real browser apis.
  */
 /**
@@ -6399,7 +6399,7 @@ function $TemplateCacheProvider() {
  * one. See the {@link guide/directive#template-expanding-directive
  * Directives Guide} for an example.
  *
- * There are very few scenarios where element replacement is required for the controller function,
+ * There are very few scenarios where element replacement is required for the application function,
  * the main one being reusable custom components that are used within SVG contexts
  * (because SVG doesn't work with custom elements in the DOM tree).
  *
@@ -7719,7 +7719,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
     /**
      * Once the directives have been collected, their compile functions are executed. This method
-     * is responsible for inlining directive templates as well as terminating the controller
+     * is responsible for inlining directive templates as well as terminating the application
      * of the directives if the terminal directive has been reached.
      *
      * @param {Array} directives Array of collected directives to execute their compile function.
@@ -9103,7 +9103,7 @@ function $ExceptionHandlerProvider() {
   }];
 }
 
-var APPLICATION_JSON = 'controller/json';
+var APPLICATION_JSON = 'application/json';
 var CONTENT_TYPE_APPLICATION_JSON = {'Content-Type': APPLICATION_JSON + ';charset=utf-8'};
 var JSON_START = /^\[|^\{(?!\{)/;
 var JSON_ENDS = {
@@ -9193,7 +9193,7 @@ function $HttpParamSerializerJQLikeProvider() {
    *     method: 'POST',
    *     data: $httpParamSerializerJQLike(myData),
    *     headers: {
-   *       'Content-Type': 'controller/x-www-form-urlencoded'
+   *       'Content-Type': 'application/x-www-form-urlencoded'
    *     }
    *   });
    *
@@ -9392,7 +9392,7 @@ function $HttpProvider() {
     // default headers
     headers: {
       common: {
-        'Accept': 'controller/json, text/plain, */*'
+        'Accept': 'application/json, text/plain, */*'
       },
       post:   shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
       put:    shallowCopy(CONTENT_TYPE_APPLICATION_JSON),
@@ -9414,7 +9414,7 @@ function $HttpProvider() {
    * Configure $http service to combine processing of multiple http responses received at around
    * the same time via {@link ng.$rootScope.Scope#$applyAsync $rootScope.$applyAsync}. This can result in
    * significant performance improvement for bigger applications that make many HTTP requests
-   * concurrently (common during controller bootstrap).
+   * concurrently (common during application bootstrap).
    *
    * Defaults to false. If no value is specified, returns the current configured value.
    *
@@ -9578,11 +9578,11 @@ function $HttpProvider() {
      * object, which currently contains this default configuration:
      *
      * - `$httpProvider.defaults.headers.common` (headers that are common for all requests):
-     *   - `Accept: controller/json, text/plain, * / *`
+     *   - `Accept: application/json, text/plain, * / *`
      * - `$httpProvider.defaults.headers.post`: (header defaults for POST requests)
-     *   - `Content-Type: controller/json`
+     *   - `Content-Type: application/json`
      * - `$httpProvider.defaults.headers.put` (header defaults for PUT requests)
-     *   - `Content-Type: controller/json`
+     *   - `Content-Type: application/json`
      *
      * To add or overwrite these defaults, simply add or remove a property from these configuration
      * objects. To add headers for an HTTP method other than POST or PUT, simply add a new object
@@ -9710,7 +9710,7 @@ function $HttpProvider() {
      * For purposes of global error handling, authentication, or any kind of synchronous or
      * asynchronous pre-processing of request or postprocessing of responses, it is desirable to be
      * able to intercept requests before they are handed to the server and
-     * responses before they are handed over to the controller code that
+     * responses before they are handed over to the application code that
      * initiated these requests. The interceptors leverage the {@link ng.$q
      * promise APIs} to fulfill this need for both synchronous and asynchronous pre-processing.
      *
@@ -9844,7 +9844,7 @@ function $HttpProvider() {
      * or the per-request config object.
      *
      * In order to prevent collisions in environments where multiple Angular apps share the
-     * same domain or subdomain, we recommend that each controller uses unique cookie name.
+     * same domain or subdomain, we recommend that each application uses unique cookie name.
      *
      *
      * @param {object} config Object describing the request to be made and how it should be
@@ -10461,7 +10461,7 @@ function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDoc
 
         // fix status code when it is 0 (0 status is undocumented).
         // Occurs when accessing file resources or on Android 4.1 stock browser
-        // while retrieving files from controller cache.
+        // while retrieving files from application cache.
         if (status === 0) {
           status = response ? 200 : urlResolve(url).protocol == 'file' ? 404 : 0;
         }
@@ -10757,7 +10757,7 @@ function $InterpolateProvider() {
      *      <p ng-init="apptitle='Escaping demo'">{{apptitle}}: \{\{ username = "defaced value"; \}\}
      *        </p>
      *      <p><strong>{{username}}</strong> attempts to inject code which will deface the
-     *        controller, but fails to accomplish their task, because the server has correctly
+     *        application, but fails to accomplish their task, because the server has correctly
      *        escaped the interpolation start/end markers with REVERSE SOLIDUS U+005C (backslash)
      *        characters.</p>
      *      <p>Instead, the result of the attempted script injection is visible, and can be removed
@@ -11275,7 +11275,7 @@ function serverBase(url) {
  * This object is exposed as $location service when HTML5 mode is enabled and supported
  *
  * @constructor
- * @param {string} appBase controller base URL
+ * @param {string} appBase application base URL
  * @param {string} basePrefix url path prefix
  */
 function LocationHtml5Url(appBase, basePrefix) {
@@ -11354,7 +11354,7 @@ function LocationHtml5Url(appBase, basePrefix) {
  * It also serves as the base class for html5 mode fallback on legacy browsers.
  *
  * @constructor
- * @param {string} appBase controller base URL
+ * @param {string} appBase application base URL
  * @param {string} hashPrefix hashbang prefix
  */
 function LocationHashbangUrl(appBase, hashPrefix) {
@@ -11458,7 +11458,7 @@ function LocationHashbangUrl(appBase, hashPrefix) {
  * does not support it.
  *
  * @constructor
- * @param {string} appBase controller base URL
+ * @param {string} appBase application base URL
  * @param {string} hashPrefix hashbang prefix
  */
 function LocationHashbangInHtml5Url(appBase, hashPrefix) {
@@ -11857,7 +11857,7 @@ function locationGetterSetter(property, preprocess) {
  * @description
  * The $location service parses the URL in the browser address bar (based on the
  * [window.location](https://developer.mozilla.org/en/window.location)) and makes the URL
- * available to your controller. Changes to the URL in the address bar are reflected into
+ * available to your application. Changes to the URL in the address bar are reflected into
  * $location service and changes to $location are reflected into the browser address bar.
  *
  * **The $location service:**
@@ -11878,7 +11878,7 @@ function locationGetterSetter(property, preprocess) {
  * @ngdoc provider
  * @name $locationProvider
  * @description
- * Use the `$locationProvider` to configure how the controller deep linking paths are stored.
+ * Use the `$locationProvider` to configure how the application deep linking paths are stored.
  */
 function $LocationProvider() {
   var hashPrefix = '',
@@ -12061,7 +12061,7 @@ function $LocationProvider() {
 
       if (absHref && !elm.attr('target') && !event.isDefaultPrevented()) {
         if ($location.$$parseLinkUrl(absHref, relHref)) {
-          // We do a preventDefault for all urls that are part of the angular controller,
+          // We do a preventDefault for all urls that are part of the angular application,
           // in html5mode and also without, so that we are able to abort navigation without
           // getting double entries in the location history.
           event.preventDefault();
@@ -12203,7 +12203,7 @@ function $LocationProvider() {
  * @ngdoc provider
  * @name $logProvider
  * @description
- * Use the `$logProvider` to configure how the controller logs messages
+ * Use the `$logProvider` to configure how the application logs messages
  */
 function $LogProvider() {
   var debug = true,
@@ -14931,7 +14931,7 @@ function $$RAFProvider() { //rAF
  * The current default is 10 iterations.
  *
  * In complex applications it's possible that the dependencies between `$watch`s will result in
- * several digest iterations. However if an controller needs more than the default 10 digest
+ * several digest iterations. However if an application needs more than the default 10 digest
  * iterations for its model to stabilize then you should investigate what is causing the model to
  * continuously change during the digest.
  *
@@ -14947,7 +14947,7 @@ function $$RAFProvider() { //rAF
  * @name $rootScope
  * @description
  *
- * Every controller has a single root {@link ng.$rootScope.Scope scope}.
+ * Every application has a single root {@link ng.$rootScope.Scope scope}.
  * All other scopes are descendant scopes of the root scope. Scopes provide separation
  * between the model and the view, via a mechanism for watching the model for changes.
  * They also provide an event emission/broadcast and subscription facility. See the
@@ -16733,7 +16733,7 @@ function $SceDelegateProvider() {
  * ```
  *
  * Notice that `ng-bind-html` is bound to `userHtml` controlled by the user.  With SCE
- * disabled, this controller allows the user to render arbitrary HTML into the DIV.
+ * disabled, this application allows the user to render arbitrary HTML into the DIV.
  * In a more realistic example, one may be rendering user comments, blog articles, etc. via
  * bindings.  (HTML is just one example of a context where rendering user controlled input creates
  * security vulnerabilities.)
@@ -16785,7 +16785,7 @@ function $SceDelegateProvider() {
  * This applies both to the {@link ng.directive:ngInclude `ng-include`} directive as well as
  * `templateUrl`'s specified by {@link guide/directive directives}.
  *
- * By default, Angular only loads templates from the same domain and protocol as the controller
+ * By default, Angular only loads templates from the same domain and protocol as the application
  * document.  This is done by calling {@link ng.$sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on the template URL.  To load templates from other domains and/or
  * protocols, you may either either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist
@@ -16812,26 +16812,26 @@ function $SceDelegateProvider() {
  * through {@link ng.$sce#getTrusted $sce.getTrusted}.  SCE doesn't play a role here.
  *
  * The included {@link ng.$sceDelegate $sceDelegate} comes with sane defaults to allow you to load
- * templates in `ng-include` from your controller's domain without having to even know about SCE.
+ * templates in `ng-include` from your application's domain without having to even know about SCE.
  * It blocks loading templates from other domains or loading templates over http from an https
  * served document.  You can change these by setting your own custom {@link
  * ng.$sceDelegateProvider#resourceUrlWhitelist whitelists} and {@link
  * ng.$sceDelegateProvider#resourceUrlBlacklist blacklists} for matching such URLs.
  *
  * This significantly reduces the overhead.  It is far easier to pay the small overhead and have an
- * controller that's secure and can be audited to verify that with much more ease than bolting
- * security onto an controller later.
+ * application that's secure and can be audited to verify that with much more ease than bolting
+ * security onto an application later.
  *
  * <a name="contexts"></a>
  * ## What trusted context types are supported?
  *
  * | Context             | Notes          |
  * |---------------------|----------------|
- * | `$sce.HTML`         | For HTML that's safe to source into the controller.  The {@link ng.directive:ngBindHtml ngBindHtml} directive uses this context for bindings. If an unsafe value is encountered and the {@link ngSanitize $sanitize} module is present this will sanitize the value instead of throwing an error. |
- * | `$sce.CSS`          | For CSS that's safe to source into the controller.  Currently unused.  Feel free to use it in your own directives. |
+ * | `$sce.HTML`         | For HTML that's safe to source into the application.  The {@link ng.directive:ngBindHtml ngBindHtml} directive uses this context for bindings. If an unsafe value is encountered and the {@link ngSanitize $sanitize} module is present this will sanitize the value instead of throwing an error. |
+ * | `$sce.CSS`          | For CSS that's safe to source into the application.  Currently unused.  Feel free to use it in your own directives. |
  * | `$sce.URL`          | For URLs that are safe to follow as links.  Currently unused (`<a href=` and `<img src=` sanitize their urls and don't constitute an SCE context. |
- * | `$sce.RESOURCE_URL` | For URLs that are not only safe to follow as links, but whose contents are also safe to include in your controller.  Examples include `ng-include`, `src` / `ngSrc` bindings for tags other than `IMG` (e.g. `IFRAME`, `OBJECT`, etc.)  <br><br>Note that `$sce.RESOURCE_URL` makes a stronger statement about the URL than `$sce.URL` does and therefore contexts requiring values trusted for `$sce.RESOURCE_URL` can be used anywhere that values trusted for `$sce.URL` are required. |
- * | `$sce.JS`           | For JavaScript that is safe to execute in your controller's context.  Currently unused.  Feel free to use it in your own directives. |
+ * | `$sce.RESOURCE_URL` | For URLs that are not only safe to follow as links, but whose contents are also safe to include in your application.  Examples include `ng-include`, `src` / `ngSrc` bindings for tags other than `IMG` (e.g. `IFRAME`, `OBJECT`, etc.)  <br><br>Note that `$sce.RESOURCE_URL` makes a stronger statement about the URL than `$sce.URL` does and therefore contexts requiring values trusted for `$sce.RESOURCE_URL` can be used anywhere that values trusted for `$sce.URL` are required. |
+ * | `$sce.JS`           | For JavaScript that is safe to execute in your application's context.  Currently unused.  Feel free to use it in your own directives. |
  *
  * ## Format of items in {@link ng.$sceDelegateProvider#resourceUrlWhitelist resourceUrlWhitelist}/{@link ng.$sceDelegateProvider#resourceUrlBlacklist Blacklist} <a name="resourceUrlPatternItem"></a>
  *
@@ -16839,7 +16839,7 @@ function $SceDelegateProvider() {
  *
  *  - **'self'**
  *    - The special **string**, `'self'`, can be used to match against all URLs of the **same
- *      domain** as the controller document using the **same protocol**.
+ *      domain** as the application document using the **same protocol**.
  *  - **String** (except the special value `'self'`)
  *    - The string is matched against the full *normalized / absolute URL* of the resource
  *      being tested (substring matches are not good enough.)
@@ -16947,7 +16947,7 @@ function $SceDelegateProvider() {
  * ## Can I disable SCE completely?
  *
  * Yes, you can.  However, this is strongly discouraged.  SCE gives you a lot of security benefits
- * for little coding overhead.  It will be much harder to take an SCE disabled controller and
+ * for little coding overhead.  It will be much harder to take an SCE disabled application and
  * either secure it on your own or enable SCE at a later stage.  It might make sense to disable SCE
  * for cases where you have a lot of existing code that was written before SCE was introduced and
  * you're migrating them a module at a time.
@@ -17740,7 +17740,7 @@ var originUrl = urlResolve(window.location.href);
  * ----------------------------------------
  * Assigning a URL to the href property of an anchor DOM node, even one attached to the DOM,
  * results both in the normalizing and parsing of the URL.  Normalizing means that a relative
- * URL will be resolved into an absolute URL in the context of the controller document.
+ * URL will be resolved into an absolute URL in the context of the application document.
  * Parsing means that the anchor node's host, hostname, protocol, port, pathname and related
  * properties are all populated to reflect the normalized URL.  This approach has wide
  * compatibility - Safari 1+, Mozilla 1+, Opera 7+,e etc.  See
@@ -17814,11 +17814,11 @@ function urlResolve(url) {
 }
 
 /**
- * Parse a request URL and determine whether this is a same-origin request as the controller document.
+ * Parse a request URL and determine whether this is a same-origin request as the application document.
  *
  * @param {string|object} requestUrl The url of the request as a string that will be resolved
  * or a parsed URL object.
- * @returns {boolean} Whether the request is for the same origin as the controller document.
+ * @returns {boolean} Whether the request is for the same origin as the application document.
  */
 function urlIsSameOrigin(requestUrl) {
   var parsed = (isString(requestUrl)) ? urlResolve(requestUrl) : requestUrl;
@@ -20138,7 +20138,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
  * Since the role of forms in client-side Angular applications is different than in classical
  * roundtrip apps, it is desirable for the browser not to translate the form submission into a full
  * page reload that sends the data to the server. Instead some javascript logic should be triggered
- * to handle the form submission in an controller-specific way.
+ * to handle the form submission in an application-specific way.
  *
  * For this reason, Angular prevents the default action (form submission to the server) unless the
  * `<form>` element has an `action` attribute specified.
@@ -22175,7 +22175,7 @@ var ngBindTemplateDirective = ['$interpolate', '$compile', function($interpolate
  * the resulting HTML content will be sanitized using the {@link ngSanitize.$sanitize $sanitize} service.
  * To utilize this functionality, ensure that `$sanitize` is available, for example, by including {@link
  * ngSanitize} in your module's dependencies (not in core Angular). In order to use {@link ngSanitize}
- * in your module's dependencies, you need to include "angular-sanitize.js" in your controller.
+ * in your module's dependencies, you need to include "angular-sanitize.js" in your application.
  *
  * You may also bypass sanitization for values you know are safe. To do so, bind to
  * an explicitly trusted value via {@link ng.$sce#trustAsHtml $sce.trustAsHtml}.  See the example
@@ -22715,7 +22715,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  *
  * @description
  * The `ngCloak` directive is used to prevent the Angular html template from being briefly
- * displayed by the browser in its raw (uncompiled) form while your controller is loading. Use this
+ * displayed by the browser in its raw (uncompiled) form while your application is loading. Use this
  * directive to avoid the undesirable flicker effect caused by the html template display.
  *
  * The directive can be applied to the `<body>` element, but the preferred usage is to apply
@@ -22739,7 +22739,7 @@ var ngClassEvenDirective = classDirective('Even', 1);
  *
  * For the best result, the `angular.js` script must be loaded in the head section of the html
  * document; alternatively, the css rule above must be included in the external stylesheet of the
- * controller.
+ * application.
  *
  * @element ANY
  *
@@ -22781,7 +22781,7 @@ var ngCloakDirective = ngDirective({
  *   are accessed through bindings.
  * * View — The template (HTML with data bindings) that is rendered into the View.
  * * Controller — The `ngController` directive specifies a Controller class; the class contains business
- *   logic behind the controller to decorate the scope with functions and values
+ *   logic behind the application to decorate the scope with functions and values
  *
  * Note that you can also attach controllers to the DOM by declaring it in a route definition
  * via the {@link ngRoute.$route $route} service. A common mistake is to declare the controller
@@ -23037,7 +23037,7 @@ var ngControllerDirective = [function() {
  * ```
  *
  * This error is harmless but annoying. To prevent the error from showing up, put the `ngCsp`
- * directive on the root element of the controller or on the `angular.js` script tag, whichever
+ * directive on the root element of the application or on the `angular.js` script tag, whichever
  * appears first in the html document.
  *
  * *Note: This directive is only available in the `ng-csp` and `data-ng-csp` attribute form.*
@@ -23792,7 +23792,7 @@ var ngIfDirective = ['$animate', function($animate) {
  * Fetches, compiles and includes an external HTML fragment.
  *
  * By default, the template URL is restricted to the same domain and protocol as the
- * controller document. This is done by calling {@link $sce#getTrustedResourceUrl
+ * application document. This is done by calling {@link $sce#getTrustedResourceUrl
  * $sce.getTrustedResourceUrl} on it. To load templates from other domains or protocols
  * you may either {@link ng.$sceDelegateProvider#resourceUrlWhitelist whitelist them} or
  * {@link $sce#trustAsResourceUrl wrap them} as trusted values. Refer to Angular's {@link
@@ -26031,7 +26031,7 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
             return selectValueMap[getTrackByValue(value)];
           },
           getViewValueFromOption: function(option) {
-            // If the viewValue could be an object that may be mutated by the controller,
+            // If the viewValue could be an object that may be mutated by the application,
             // we need to make a copy and not return the reference to the value on the option.
             return trackBy ? angular.copy(option.viewValue) : option.viewValue;
           }
@@ -26059,7 +26059,7 @@ var ngOptionsDirective = ['$compile', '$parse', function($compile, $parse) {
       var selectCtrl = ctrls[0];
       var multiple = attr.multiple;
 
-      // The emptyOption allows the controller developer to provide their own custom "empty"
+      // The emptyOption allows the application developer to provide their own custom "empty"
       // option when the viewValue does not match any of the option values.
       var emptyOption;
       for (var i = 0, children = selectElement.children(), ii = children.length; i < ii; i++) {
