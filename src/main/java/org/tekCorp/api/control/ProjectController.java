@@ -17,7 +17,6 @@ import org.tekCorp.api.repository.StatisticRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Inspiron on 15/06/2015.
@@ -48,7 +47,10 @@ public class ProjectController {
     @RequestMapping(value = "/list/user/{id}")
     public List<Project> listUserProject(@PathVariable("id") Integer id){
         List<ProjectUser> list = projectUserRepository.findByIdUserId(id);
-        List<Integer> listIdProject = list.stream().map(pu -> pu.getId().getProjectId()).collect(Collectors.toList());
+        List<Integer> listIdProject = new ArrayList<>();
+        for (ProjectUser projectUser : list){
+            listIdProject.add(projectUser.getId().getProjectId());
+        }
 
         return projectRepository.findByIdProjectIn(listIdProject) ;
     }
@@ -56,7 +58,10 @@ public class ProjectController {
     @RequestMapping(value = "/list/computer/{id}")
     public List<Project> listComputerProject(@PathVariable("id") Integer id){
         List<ProjectComputer> list = projectComputerRepository.findByIdComputerId(id);
-        List<Integer> listIdProject = list.stream().map(pc -> pc.getId().getProjectId()).collect(Collectors.toList());
+        List<Integer> listIdProject = new ArrayList<>();
+        for (ProjectComputer projectComputer : list){
+            listIdProject.add(projectComputer.getId().getProjectId());
+        }
 
         return projectRepository.findByIdProjectIn(listIdProject) ;
     }
@@ -94,7 +99,7 @@ public class ProjectController {
 
             project = listProject.get(listProject.indexOf(project));
             if (!mapStat.containsKey(project)){
-                mapStat.put(project, new ArrayList<>());
+                mapStat.put(project, new ArrayList<Statistic>());
             }
 
             mapStat.get(project).add(statistic);
