@@ -6,13 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.tekCorp.api.domain.Project;
+import org.tekCorp.api.domain.User;
 import org.tekCorp.api.domain.projectcomputer.ProjectComputer;
 import org.tekCorp.api.domain.projectuser.ProjectUser;
 import org.tekCorp.api.domain.statistic.Statistic;
-import org.tekCorp.api.repository.ProjectComputerRepository;
-import org.tekCorp.api.repository.ProjectRepository;
-import org.tekCorp.api.repository.ProjectUserRepository;
-import org.tekCorp.api.repository.StatisticRepository;
+import org.tekCorp.api.repository.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +46,10 @@ public class ProjectController {
         List<ProjectUser> list = projectUserRepository.findByIdProjectId(id);
         List<Integer> listIdUser = new ArrayList<>();
         for (ProjectUser projectUser : list){
-            listIdProject.add(projectUser.getId().getProjectId());
+            listIdUser.add(projectUser.getId().getUserId());
         }
 
-        return projectRepository.findByIdProjectIn(listIdProject) ;
+        return userRepository.findByIdUserIn(listIdUser) ;
     }
 
     @RequestMapping(value = "/list/computer/{id}")
