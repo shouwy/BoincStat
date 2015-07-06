@@ -9,6 +9,10 @@ import javax.persistence.*;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idUser;
+
+    @Column(unique = true)
     private String boincId;
     private String name;
 
@@ -16,6 +20,19 @@ public class User {
     public User(String boincId, String name) {
         this.boincId = boincId;
         this.name = name;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("User[id=%d, BoincId='%s', name='%s']", getIdUser(), getBoincId(), getName());
+    }
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     public String getBoincId() {
@@ -26,6 +43,14 @@ public class User {
         this.boincId = boincId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -33,12 +58,11 @@ public class User {
 
         User user = (User) o;
 
-        return boincId.equals(user.boincId);
-
+        return getIdUser().equals(user.getIdUser());
     }
 
     @Override
     public int hashCode() {
-        return boincId.hashCode();
+        return getIdUser().hashCode();
     }
 }

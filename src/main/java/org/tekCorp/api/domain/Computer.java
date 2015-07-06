@@ -12,6 +12,7 @@ public class Computer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idComputer;
 
+    private Integer idUser;
     private String name;
     private Integer idUser;
 
@@ -22,11 +23,19 @@ public class Computer {
 
     @Override
     public String toString() {
-        return String.format("Computer[computerId=%d, Name=%s]", idComputer, name);
+        return String.format("Computer[computerId=%d, idUser=%d, Name=%s]", getIdComputer(), getIdUser(), getName());
     }
 
     public Integer getIdComputer() {
         return idComputer;
+    }
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     public void setIdComputer(Integer idComputer) {

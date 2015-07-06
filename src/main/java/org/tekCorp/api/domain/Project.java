@@ -26,7 +26,7 @@ public class Project {
 
     @Override
     public String toString(){
-        return String.format("Project[id=%d, name='%s', status='%s', archived='%s']", idProject, name, status, archived);
+        return String.format("Project[id=%d, name='%s', status='%s', archived='%s']", getIdProject(), getName(), getStatus(), getArchived());
     }
 
     public Integer getIdProject() {

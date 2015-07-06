@@ -33,16 +33,20 @@ public class ProjectController {
     protected ProjectUserRepository projectUserRepository;
     @Autowired
     protected ProjectComputerRepository projectComputerRepository;
+    @Autowired
+    protected UserRepository userRepository;
+    @Autowired
+    protected ComputerRepositoy computerRepositoy;
 
     @RequestMapping(value = "/list")
     public List<Project> listProject(){
         return projectRepository.findAll();
     }
 
-    @RequestMapping(value = "/list/user/{id}")
-    public List<Project> listUserProject(@PathVariable("id") Integer id){
-        List<ProjectUser> list = projectUserRepository.findByIdUserId(id);
-        List<Integer> listIdProject = new ArrayList<>();
+    @RequestMapping(value = "/{id}/list/user")
+    public List<User> listProjectUser(@PathVariable("id") Integer id){
+        List<ProjectUser> list = projectUserRepository.findByIdProjectId(id);
+        List<Integer> listIdUser = new ArrayList<>();
         for (ProjectUser projectUser : list){
             listIdProject.add(projectUser.getId().getProjectId());
         }
@@ -80,31 +84,5 @@ public class ProjectController {
     @RequestMapping(value = "/update/", method = RequestMethod.POST)
     public Project updateProject(@RequestBody Project project){
         return projectRepository.save(project);
-    }
-
-    @RequestMapping(value = "/stat")
-    public HashMap<Project, ArrayList<Statistic>> getAllStatProject(){
-        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
-
-        HashMap<Project, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Project project = new Project();
-            project.setIdProject(statistic.getId().getProjectId());
-
-            project = listProject.get(listProject.indexOf(project));
-            if (!mapStat.containsKey(project)){
-                mapStat.put(project, new ArrayList<Statistic>());
-            }
-
-            mapStat.get(project).add(statistic);
-        }
-
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/stat/{id}")
-    public List<Statistic> getStatById(@PathVariable("id") Integer id){
-        return statisticRepository.findByIdProjectId(id);
     }
 }
