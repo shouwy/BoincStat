@@ -5,17 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.tekCorp.api.domain.Computer;
 import org.tekCorp.api.domain.Project;
+import org.tekCorp.api.domain.User;
 import org.tekCorp.api.domain.projectcomputer.ProjectComputer;
 import org.tekCorp.api.domain.projectuser.ProjectUser;
-import org.tekCorp.api.domain.statistic.Statistic;
-import org.tekCorp.api.repository.ProjectComputerRepository;
-import org.tekCorp.api.repository.ProjectRepository;
-import org.tekCorp.api.repository.ProjectUserRepository;
-import org.tekCorp.api.repository.StatisticRepository;
+import org.tekCorp.api.repository.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,37 +30,36 @@ public class ProjectController {
     protected ProjectUserRepository projectUserRepository;
     @Autowired
     protected ProjectComputerRepository projectComputerRepository;
+    @Autowired
+    protected UserRepository userRepository;
+    @Autowired
+    protected ComputerRepositoy computerRepositoy;
 
     @RequestMapping(value = "/list")
     public List<Project> listProject(){
         return projectRepository.findAll();
     }
 
-    @RequestMapping(value = "/list/{page}/{nbElement}")
-    public Page<Project> pageProject(@PathVariable("page") Integer page, @PathVariable("nbElement") Integer nbElement){
-        return projectRepository.findAll(new PageRequest(page, nbElement));
-    }
-
-    @RequestMapping(value = "/list/user/{id}")
-    public List<Project> listUserProject(@PathVariable("id") Integer id){
-        List<ProjectUser> list = projectUserRepository.findByIdUserId(id);
-        List<Integer> listIdProject = new ArrayList<>();
+    @RequestMapping(value = "/{id}/list/user")
+    public List<User> listProjectUser(@PathVariable("id") Integer id){
+        List<ProjectUser> list = projectUserRepository.findByIdProjectId(id);
+        List<Integer> listIdUser = new ArrayList<>();
         for (ProjectUser projectUser : list){
-            listIdProject.add(projectUser.getId().getProjectId());
+            listIdUser.add(projectUser.getId().getUserId());
         }
 
-        return projectRepository.findByIdProjectIn(listIdProject) ;
+        return userRepository.findByIdUserIn(listIdUser);
     }
 
-    @RequestMapping(value = "/list/computer/{id}")
-    public List<Project> listComputerProject(@PathVariable("id") Integer id){
-        List<ProjectComputer> list = projectComputerRepository.findByIdComputerId(id);
-        List<Integer> listIdProject = new ArrayList<>();
+    @RequestMapping(value = "/{id}/list/computer")
+    public List<Computer> listComputerProject(@PathVariable("id") Integer id){
+        List<ProjectComputer> list = projectComputerRepository.findByIdProjectId(id);
+        List<Integer> listIdComputer = new ArrayList<>();
         for (ProjectComputer projectComputer : list){
-            listIdProject.add(projectComputer.getId().getProjectId());
+            listIdComputer.add(projectComputer.getId().getComputerId());
         }
 
-        return projectRepository.findByIdProjectIn(listIdProject) ;
+        return computerRepositoy.findAll(listIdComputer) ;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -82,34 +78,8 @@ public class ProjectController {
         return projectRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/update/", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Project updateProject(@RequestBody Project project){
         return projectRepository.save(project);
-    }
-
-    @RequestMapping(value = "/stat/")
-    public HashMap<Project, ArrayList<Statistic>> getAllStat(){
-        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
-
-        HashMap<Project, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Project project = new Project();
-            project.setIdProject(statistic.getId().getProjectId());
-
-            project = listProject.get(listProject.indexOf(project));
-            if (!mapStat.containsKey(project)){
-                mapStat.put(project, new ArrayList<Statistic>());
-            }
-
-            mapStat.get(project).add(statistic);
-        }
-
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/stat/{id}")
-    public List<Statistic> getStatById(@PathVariable("id") Integer id){
-        return statisticRepository.findByIdProjectId(id);
     }
 }
