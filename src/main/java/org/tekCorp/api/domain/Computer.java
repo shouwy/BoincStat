@@ -13,8 +13,9 @@ public class Computer {
     private Integer idComputer;
 
     private String name;
+    private Integer idUser;
 
-    protected Computer(){}
+    public Computer(){}
     public Computer(String name) {
         this.name = name;
     }
@@ -38,6 +39,14 @@ public class Computer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
     }
 
     @Override

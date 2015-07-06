@@ -39,11 +39,6 @@ public class ProjectController {
         return projectRepository.findAll();
     }
 
-    @RequestMapping(value = "/list/{page}/{nbElement}")
-    public Page<Project> pageProject(@PathVariable("page") Integer page, @PathVariable("nbElement") Integer nbElement){
-        return projectRepository.findAll(new PageRequest(page, nbElement));
-    }
-
     @RequestMapping(value = "/list/user/{id}")
     public List<Project> listUserProject(@PathVariable("id") Integer id){
         List<ProjectUser> list = projectUserRepository.findByIdUserId(id);
@@ -87,8 +82,8 @@ public class ProjectController {
         return projectRepository.save(project);
     }
 
-    @RequestMapping(value = "/stat/")
-    public HashMap<Project, ArrayList<Statistic>> getAllStat(){
+    @RequestMapping(value = "/stat")
+    public HashMap<Project, ArrayList<Statistic>> getAllStatProject(){
         ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
         ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
 
