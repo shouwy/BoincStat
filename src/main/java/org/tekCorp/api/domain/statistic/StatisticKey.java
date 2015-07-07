@@ -56,17 +56,17 @@ public class StatisticKey implements Serializable{
 
         StatisticKey that = (StatisticKey) o;
 
-        if (!projectId.equals(that.projectId)) return false;
-        if (!computerId.equals(that.computerId)) return false;
-        return date.equals(that.date);
+        if (!getProjectId().equals(that.getProjectId())) return false;
+        if (!getComputerId().equals(that.getComputerId())) return false;
+        return getDate().equals(that.getDate());
 
     }
 
     @Override
     public int hashCode() {
-        int result = projectId.hashCode();
-        result = 31 * result + computerId.hashCode();
-        result = 31 * result + date.hashCode();
+        int result = getProjectId().hashCode();
+        result = 31 * result + getComputerId().hashCode();
+        result = 31 * result + getDate().hashCode();
         return result;
     }
 }

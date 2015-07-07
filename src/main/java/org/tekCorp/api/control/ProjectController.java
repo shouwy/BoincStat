@@ -1,19 +1,15 @@
 package org.tekCorp.api.control;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.tekCorp.api.domain.Project;
 import org.tekCorp.api.domain.User;
 import org.tekCorp.api.domain.projectcomputer.ProjectComputer;
 import org.tekCorp.api.domain.projectuser.ProjectUser;
-import org.tekCorp.api.domain.statistic.Statistic;
 import org.tekCorp.api.repository.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,7 +30,7 @@ public class ProjectController {
     @Autowired
     protected UserRepository userRepository;
     @Autowired
-    protected ComputerRepositoy computerRepositoy;
+    protected ComputerRepository computerRepository;
 
     @RequestMapping(value = "/list")
     public List<Project> listProject(){

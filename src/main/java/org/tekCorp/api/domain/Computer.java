@@ -12,7 +12,6 @@ public class Computer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idComputer;
 
-    private Integer idUser;
     private String name;
     private Integer idUser;
 
@@ -28,14 +27,6 @@ public class Computer {
 
     public Integer getIdComputer() {
         return idComputer;
-    }
-
-    public Integer getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
     }
 
     public void setIdComputer(Integer idComputer) {

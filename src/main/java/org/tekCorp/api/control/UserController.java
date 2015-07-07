@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     protected ProjectRepository projectRepository;
     @Autowired
-    protected ComputerRepositoy computerRepositoy;
+    protected ComputerRepository computerRepository;
 
     @RequestMapping(value = "/list")
     public List<User> listUser(){
@@ -48,7 +48,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}/list/computer")
     public List<Computer> listComputer(@PathVariable("id") Integer id){
-        return computerRepositoy.findByIdUser(id);
+        return computerRepository.findByIdUser(id);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
