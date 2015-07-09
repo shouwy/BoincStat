@@ -3,6 +3,7 @@ package org.tekCorp.api.control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.tekCorp.api.domain.Computer;
 import org.tekCorp.api.domain.Project;
 import org.tekCorp.api.domain.User;
 import org.tekCorp.api.domain.projectcomputer.ProjectComputer;
@@ -48,15 +49,15 @@ public class ProjectController {
         return userRepository.findByIdUserIn(listIdUser) ;
     }
 
-    @RequestMapping(value = "/list/computer/{id}")
-    public List<Project> listComputerProject(@PathVariable("id") Integer id){
-        List<ProjectComputer> list = projectComputerRepository.findByIdComputerId(id);
-        List<Integer> listIdProject = new ArrayList<>();
+    @RequestMapping(value = "{id}/list/computer/")
+    public List<Computer> listComputerProject(@PathVariable("id") Integer id){
+        List<ProjectComputer> list = projectComputerRepository.findByIdProjectId(id);
+        List<Integer> listIdComputer = new ArrayList<>();
         for (ProjectComputer projectComputer : list){
-            listIdProject.add(projectComputer.getId().getProjectId());
+            listIdComputer.add(projectComputer.getId().getComputerId());
         }
 
-        return projectRepository.findByIdProjectIn(listIdProject) ;
+        return computerRepository.findByIdComputerIn(listIdComputer);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)

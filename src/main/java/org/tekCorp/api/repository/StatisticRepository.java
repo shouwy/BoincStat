@@ -13,8 +13,9 @@ import java.util.List;
 public interface StatisticRepository extends JpaRepository<Statistic, StatisticKey>{
 
     List<Statistic> findByIdProjectId(Integer projectId);
+    List<Statistic> findByIdProjectIdIn(List<Integer> listProject);
     List<Statistic> findByIdComputerId(Integer computerId);
-    List<Statistic> findByIdComputerIdIn(List<Computer> listComputer);
-
+    List<Statistic> findByIdComputerIdIn(List<Integer> listComputer);
     List<Statistic> findByIdIn(List<StatisticKey> listIdKey);
+    List<Statistic> findByIdProjectIdInAndIdComputerIdIn(List<Integer> listIdProject, List<Integer> listIdomputer);
 }

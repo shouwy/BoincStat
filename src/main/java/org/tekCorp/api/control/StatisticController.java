@@ -1,28 +1,28 @@
 package org.tekCorp.api.control;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tekCorp.api.Util.StatUtil;
 import org.tekCorp.api.domain.Computer;
 import org.tekCorp.api.domain.Project;
 import org.tekCorp.api.domain.User;
 import org.tekCorp.api.domain.projectcomputer.ProjectComputer;
 import org.tekCorp.api.domain.projectuser.ProjectUser;
 import org.tekCorp.api.domain.statistic.Statistic;
-import org.tekCorp.api.domain.statistic.StatisticKey;
 import org.tekCorp.api.repository.*;
+import org.tekCorp.api.views.StatisticViews;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 
 /**
  * Created by Inspiron on 06/07/2015.
  */
 @RestController
-@RequestMapping(value="/stat", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="/stat")
 public class StatisticController {
 
     @Autowired
@@ -38,115 +38,110 @@ public class StatisticController {
     @Autowired
     protected ProjectComputerRepository projectComputerRepository;
 
-    @RequestMapping(value = "/project")
-    public HashMap<Project, ArrayList<Statistic>> getAllProjectStat(){
+    @RequestMapping(value = "/all")
+    public ArrayList<StatisticViews> getAllStat(){
         ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
 
-        HashMap<Project, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Project project = new Project();
-            project.setIdProject(statistic.getId().getProjectId());
+        return computeData(listProject, listComputer, listUser, listStat);
+    }
 
-            project = listProject.get(listProject.indexOf(project));
-            if (!mapStat.containsKey(project)){
-                mapStat.put(project, new ArrayList<Statistic>());
-            }
+    @RequestMapping(value = "/all/project")
+    public ArrayList<StatisticViews> getAllStatByProject(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
 
-            mapStat.get(project).add(statistic);
-        }
+        return StatUtil.sumByProject(computeData(listProject, listComputer, listUser, listStat));
+    }
 
-        return mapStat;
+    @RequestMapping(value = "/all/project/best")
+    public StatisticViews getAllProjectBest(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
+
+        return StatUtil.bestProject(computeData(listProject, listComputer, listUser, listStat));
+    }
+
+    @RequestMapping(value = "/all/computer")
+    public ArrayList<StatisticViews> getAllStatByComputer(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
+
+        return StatUtil.sumByComputer(computeData(listProject, listComputer, listUser, listStat));
+    }
+
+    @RequestMapping(value = "/all/computer/best")
+    public StatisticViews getAllCommputerBest(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
+
+        return StatUtil.bestComputer(computeData(listProject, listComputer, listUser, listStat));
+    }
+
+    @RequestMapping(value = "/all/user")
+    public ArrayList<StatisticViews> getAllStatByUser(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
+
+        return StatUtil.sumByUser(computeData(listProject, listComputer, listUser, listStat));
+    }
+
+    @RequestMapping(value = "/all/user/best")
+    public StatisticViews getAllUserBest(){
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findAll();
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findAll();
+
+        return StatUtil.bestUser(computeData(listProject, listComputer, listUser, listStat));
     }
 
     @RequestMapping(value = "/project/{id}")
-    public List<Statistic> getStatProject(@PathVariable("id") Integer id){
-        return statisticRepository.findByIdProjectId(id);
-    }
+    public ArrayList<StatisticViews> getStatProject(@PathVariable("id") Integer id){
+        Project project = projectRepository.findOne(id);
+        ArrayList<Project> listProject = new ArrayList<>();
+        listProject.add(project);
 
-    @RequestMapping(value = "/project/{id}/user")
-    public HashMap<User, ArrayList<Statistic>> getProjectStatUser(@PathVariable("id") Integer id){
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findByIdProjectId(id);
-        List<ProjectUser> listProjectUser = projectUserRepository.findByIdProjectId(id);
-        List<Integer> listIdUser = new ArrayList<>();
-        for (ProjectUser projectUser : listProjectUser){
-            listIdUser.add(projectUser.getId().getUserId());
-        }
-        ArrayList<User> listUser = (ArrayList<User>) userRepository.findByIdUserIn(listIdUser);
-        ArrayList<Computer> listComputer = computerRepository.findByIdUserIn(listIdUser);
-        HashMap<User, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Computer computer = new Computer();
-            computer.setIdComputer(statistic.getId().getComputerId());
-            computer = listComputer.get(listComputer.indexOf(computer));
-
-            User user = new User();
-            user.setIdUser(computer.getIdUser());
-
-            user = listUser.get(listComputer.indexOf(user));
-            if (!mapStat.containsKey(user)){
-                mapStat.put(user, new ArrayList<Statistic>());
-            }
-
-            mapStat.get(user).add(statistic);
-        }
-
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/project/{id}/computer")
-    public HashMap<Computer, ArrayList<Statistic>> getProjectStatComputer(@PathVariable("id") Integer id){
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findByIdProjectId(id);
         List<ProjectComputer> listProjectComputer = projectComputerRepository.findByIdProjectId(id);
         List<Integer> listIdComputer = new ArrayList<>();
         for (ProjectComputer projectComputer : listProjectComputer){
             listIdComputer.add(projectComputer.getId().getComputerId());
         }
         ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findByIdComputerIn(listIdComputer);
-        HashMap<Computer, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Computer computer = new Computer();
-            computer.setIdComputer(statistic.getId().getComputerId());
-            computer = listComputer.get(listComputer.indexOf(computer));
 
-            if (!mapStat.containsKey(computer)){
-                mapStat.put(computer, new ArrayList<Statistic>());
-            }
-
-            mapStat.get(computer).add(statistic);
+        List<Integer> listIdUser = new ArrayList<>();
+        for (Computer computer : listComputer){
+            listIdUser.add(computer.getIdUser());
         }
-        return mapStat;
-    }
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findByIdUserIn(listIdUser);
 
-    @RequestMapping(value = "/computer")
-    public HashMap<Computer, ArrayList<Statistic>> getAllComputerStat(){
-        ArrayList<Computer> listComputer  = (ArrayList<Computer>) computerRepository.findAll();
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
+        List<Statistic> listStat = statisticRepository.findByIdProjectId(id);
 
-        HashMap<Computer, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
-            Computer computer = new Computer();
-            computer.setIdComputer(statistic.getId().getComputerId());
-
-            computer = listComputer.get(listComputer.indexOf(computer));
-            if (!mapStat.containsKey(computer)){
-                mapStat.put(computer, new ArrayList<Statistic>());
-            }
-
-            mapStat.get(computer).add(statistic);
-        }
-
-        return mapStat;
+        return computeData(listProject, listComputer, listUser, listStat);
     }
 
     @RequestMapping(value = "/computer/{id}")
-    public List<Statistic> getComputerStat(@PathVariable("id") Integer id){
-        return statisticRepository.findByIdComputerId(id);
-    }
+    public ArrayList<StatisticViews> getComputerStat(@PathVariable("id") Integer id){
+        Computer computer = computerRepository.findOne(id);
+        ArrayList<Computer> listComputer = new ArrayList<>();
+        listComputer.add(computer);
 
-    @RequestMapping(value = "/computer/{id}/project")
-    public HashMap<Project, ArrayList<Statistic>> getComputerStatProject(@PathVariable("id") Integer id){
-        List<Statistic> listStat = statisticRepository.findByIdComputerId(id);
+        List<Integer> listIdUser = new ArrayList<>();
+        listIdUser.add(computer.getIdUser());
+        ArrayList<User> listUser = (ArrayList<User>) userRepository.findByIdUserIn(listIdUser);
+
         List<ProjectComputer> listProjectComputer = projectComputerRepository.findByIdComputerId(id);
         List<Integer> listIdProject = new ArrayList<>();
         for (ProjectComputer projectComputer : listProjectComputer){
@@ -154,84 +149,77 @@ public class StatisticController {
         }
         ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findByIdProjectIn(listIdProject);
 
-        HashMap<Project, ArrayList<Statistic>> mapStat = new HashMap<>();
+        List<Statistic> listStat = statisticRepository.findByIdComputerId(id);
+
+        return computeData(listProject, listComputer, listUser, listStat);
+    }
+
+    @RequestMapping(value = "/user/{id}")
+    public ArrayList<StatisticViews> getUserStat(@PathVariable("id") Integer id){
+        User user = userRepository.findOne(id);
+        ArrayList<User> listUser = new ArrayList<>();
+        listUser.add(user);
+
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findByIdUser(id);
+        List<Integer> listIdComputer = new ArrayList<>();
+        for (Computer computer : listComputer){
+            listIdComputer.add(computer.getIdComputer());
+        }
+
+        List<ProjectUser> listProjectUser = projectUserRepository.findByIdUserId(id);
+        List<Integer> listIdProject = new ArrayList<>();
+        for (ProjectUser projectUser : listProjectUser){
+            listIdProject.add(projectUser.getId().getProjectId());
+        }
+        ArrayList<Project> listProject = (ArrayList<Project>) projectRepository.findByIdProjectIn(listIdProject);
+
+        List<Statistic> listStat = statisticRepository.findByIdComputerIdIn(listIdComputer);
+
+        return computeData(listProject, listComputer, listUser, listStat);
+    }
+
+    @RequestMapping(value = "/user/{idUser}/project/{idProject}")
+    public ArrayList<StatisticViews> getUserStatProjectStat(@PathVariable("idUser") Integer idUser, @PathVariable("idProject") Integer idProject){
+        Project project = projectRepository.findOne(idProject);
+        ArrayList<Project> listProject = new ArrayList<>();
+        listProject.add(project);
+        List<Integer> listIdProject = new ArrayList<>();
+        listIdProject.add(idProject);
+
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findByIdUser(idUser);
+        List<Integer> listIdComputer = new ArrayList<>();
+        for (Computer computer : listComputer){
+            listIdComputer.add(computer.getIdComputer());
+        }
+
+        User user = userRepository.findOne(idUser);
+        ArrayList<User> listUser = new ArrayList<>();
+        listUser.add(user);
+
+        List<Statistic> listStat = statisticRepository.findByIdProjectIdInAndIdComputerIdIn(listIdProject, listIdComputer);
+
+        return computeData(listProject, listComputer, listUser, listStat);
+    }
+
+    private ArrayList<StatisticViews> computeData(ArrayList<Project> listProject, ArrayList<Computer> listComputer, ArrayList<User> listUser, List<Statistic> listStat) {
+        ArrayList<StatisticViews> list = new ArrayList<>();
+
         for (Statistic statistic : listStat){
             Project project = new Project();
             project.setIdProject(statistic.getId().getProjectId());
-
             project = listProject.get(listProject.indexOf(project));
-            if (!mapStat.containsKey(project)){
-                mapStat.put(project, new ArrayList<Statistic>());
-            }
 
-            mapStat.get(project).add(statistic);
-        }
-
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/user")
-    public HashMap<User, ArrayList<Statistic>> getAllUserStat(){
-        ArrayList<User> listUser = (ArrayList<User>) userRepository.findAll();
-        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findAll();
-        ArrayList<Statistic> listStat = (ArrayList<Statistic>) statisticRepository.findAll();
-
-        HashMap<User, ArrayList<Statistic>> mapStat = new HashMap<>();
-        for (Statistic statistic : listStat){
             Computer computer = new Computer();
             computer.setIdComputer(statistic.getId().getComputerId());
             computer = listComputer.get(listComputer.indexOf(computer));
 
             User user = new User();
             user.setIdUser(computer.getIdUser());
+            user = listUser.get(listUser.indexOf(user));
 
-            user = listUser.get(listComputer.indexOf(user));
-            if (!mapStat.containsKey(user)){
-                mapStat.put(user, new ArrayList<Statistic>());
-            }
-            mapStat.get(user).add(statistic);
+            StatisticViews statisticViews = new StatisticViews(project, computer, user, statistic.getId().getDate(), statistic.getValue());
+            list.add(statisticViews);
         }
-
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/user/{id}")
-    public List<Statistic> getUserStat(@PathVariable("id") Integer id){
-        List<Computer> listComputer = computerRepository.findByIdUser(id);
-        return statisticRepository.findByIdComputerIdIn(listComputer);
-    }
-
-    @RequestMapping(value = "/user/{id}/computer")
-    public HashMap<Computer, ArrayList<Statistic>> getUserStatComputer(@PathVariable("id") Integer id){
-        HashMap<Computer, ArrayList<Statistic>> mapStat = new HashMap<>();
-        /**
-         * TODO
-         */
-        return mapStat;
-    }
-
-    @RequestMapping(value = "/user/{id}/project")
-    public HashMap<Project, ArrayList<Statistic>> getUserStatProject(@PathVariable("id") Integer id){
-        HashMap<Project, ArrayList<Statistic>> mapStat = new HashMap<>();
-        /**
-         * TODO
-         */
-        return mapStat;
-    }
-    @RequestMapping(value = "/user/{idUser}/project/{idProject}")
-    public List<Statistic> getUserStatProjectStat(@PathVariable("idUser") Integer idUser, @PathVariable("idProject") Integer idProject){
-        List<StatisticKey> listIdKey = new ArrayList<>();
-        /**
-         * TODO
-         */
-        return statisticRepository.findByIdIn(listIdKey);
-    }
-    @RequestMapping(value = "/user/{idUser}/project/{idProject}/computer")
-    public HashMap<Computer, ArrayList<Statistic>> getUserStatProjectStatComputer(@PathVariable("idUser") Integer idUser, @PathVariable("idProject") Integer idProject){
-        HashMap<Computer, ArrayList<Statistic>> mapStat = new HashMap<>();
-        /**
-         * TODO
-         */
-        return mapStat;
+        return list;
     }
 }

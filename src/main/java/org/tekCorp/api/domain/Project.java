@@ -69,7 +69,6 @@ public class Project {
         Project project = (Project) o;
 
         return getIdProject().equals(project.getIdProject());
-
     }
 
     @Override
