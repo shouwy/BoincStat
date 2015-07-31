@@ -49,7 +49,7 @@ public class ProjectController {
         return userRepository.findByIdUserIn(listIdUser) ;
     }
 
-    @RequestMapping(value = "{id}/list/computer/")
+    @RequestMapping(value = "{id}/list/computer")
     public List<Computer> listComputerProject(@PathVariable("id") Integer id){
         List<ProjectComputer> list = projectComputerRepository.findByIdProjectId(id);
         List<Integer> listIdComputer = new ArrayList<>();

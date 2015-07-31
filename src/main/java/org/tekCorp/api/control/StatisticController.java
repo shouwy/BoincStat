@@ -15,6 +15,7 @@ import org.tekCorp.api.repository.*;
 import org.tekCorp.api.views.StatisticViews;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -130,6 +131,35 @@ public class StatisticController {
         List<Statistic> listStat = statisticRepository.findByIdProjectId(id);
 
         return computeData(listProject, listComputer, listUser, listStat);
+    }
+
+    @RequestMapping(value = "/project/{id}/computer")
+    public HashMap<String, Integer> getStatProjectComputer(@PathVariable("id") Integer id){
+        Project project = projectRepository.findOne(id);
+        ArrayList<Project> listProject = new ArrayList<>();
+        listProject.add(project);
+
+        List<ProjectComputer> listProjectComputer = projectComputerRepository.findByIdProjectId(id);
+        List<Integer> listIdComputer = new ArrayList<>();
+        for (ProjectComputer projectComputer : listProjectComputer){
+            listIdComputer.add(projectComputer.getId().getComputerId());
+        }
+        ArrayList<Computer> listComputer = (ArrayList<Computer>) computerRepository.findByIdComputerIn(listIdComputer);
+        List<Statistic> listStat = statisticRepository.findByIdProjectId(id);
+
+        HashMap<String, Integer> mapComputer = new HashMap<>();
+        for (Statistic statistic : listStat){
+            Computer computer = new Computer();
+            computer.setIdComputer(statistic.getId().getComputerId());
+            computer = listComputer.get(listComputer.indexOf(computer));
+
+            if (!mapComputer.containsKey(computer.getName())){
+                mapComputer.put(computer.getName(), 0);
+            }
+            mapComputer.put(computer.getName(), mapComputer.get(computer.getName()) + statistic.getValue());
+        }
+
+        return mapComputer;
     }
 
     @RequestMapping(value = "/computer/{id}")
